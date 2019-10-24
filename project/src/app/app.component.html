@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Strategic Agenda</h1>
+  <p>To change the sorting order, please click on the table headers</p>
+
+  <div ng-app="myApp" ng-controller="namesCtrl">
+    <!-- ------FILTER BOX----- -->
+    <p>Please search by name</p>
+    <input [(ngModel)]="searchTerm" placeholder="search text goes here">
+    <!-- <p>Please search by email</p>
+    <input [(ngModel)]="searchTerm" placeholder="search text goes here"> -->
+    <table border="2" width="100%">
+      <!-- ------TABLE HEADERS, CREATED IN A WAY SO WE CAN SORT DATA BY CLICKING THEM------- -->
+      <tr>
+        <th [class.active]="order === 'id'" (click)="setOrder('id')">
+          ID <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+        </th>
+        <th [class.active]="order === 'name'" (click)="setOrder('name')" class="mdl-data-table__cell--non-numeric">
+          Name <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+        </th>
+        <th [class.active]="order === 'email'" (click)="setOrder('email')">
+          Email <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </th>
+        <th [class.active]="order === 'phone'" (click)="setOrder('phone')">
+          Phone Number <span [hidden]="reverse">▼</span>
+          <span [hidden]="!reverse">▲</span>
+        </th>
+      </tr>
+      <!-- -------TABLE DATA FILLED BY arrList. ALSO SORTING, PAGINATION AND FILTERING APPLIED. FILTERING IS CODED RIGHT, BUT FOR SOME REASONS IT IS NOT RETURNING RESULTS---  -->
+      <tr
+        *ngFor="let person of arrList | filterBy: searchTerm | paginate: {itemsPerPage:15, currentPage: p} | orderBy: order: reverse: 'case-insensitive'">
+        <td>{{person.id}}</td>
+        <td>{{person.name}}</td>
+        <td>{{person.email}}</td>
+        <td>{{person.phone}}</td>
+      </tr>
+    </table>
+    <pagination-controls (pageChange)="p=$event"></pagination-controls>
+
+  </div>
+</body>
+
+</html>
